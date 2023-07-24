@@ -97,6 +97,8 @@ def punch_for_wood (state, ID):
 def craft_wooden_axe_at_bench (state, ID):
 	return [('have_enough', ID, 'bench', 1), ('have_enough', ID, 'stick', 2), ('have_enough', ID, 'plank', 3), ('op_craft_wooden_axe_at_bench', ID)]
 
+# your code here
+
 def craft_bench(state, ID):
     return [("have_enough", ID, "plank", 4), ("op_craft_bench", ID)]
 
@@ -109,9 +111,7 @@ def craft_stick(state, ID):
 def wooden_axe_for_wood(state, ID):
 	return [("have_enough", ID, "wooden_axe", 1), ("op_wooden_axe_for_wood", ID)]
 
-# your code here
-
-pyhop.declare_methods ('produce_wood', punch_for_wood, wooden_axe_for_wood)
+pyhop.declare_methods("produce_wood", wooden_axe_for_wood, punch_for_wood)
 pyhop.declare_methods ('produce_wooden_axe', craft_wooden_axe_at_bench)
 pyhop.declare_methods("produce_bench", craft_bench)
 pyhop.declare_methods("produce_plank", craft_plank)
@@ -122,8 +122,8 @@ pyhop.declare_methods("produce_stick", craft_stick)
 # declare state
 state = pyhop.State('state')
 state.wood = {'agent': 0}
-state.time = {'agent': 4}
-# state.time = {'agent': 46}
+# state.time = {'agent': 4}
+state.time = {'agent': 46}
 state.wooden_axe = {'agent': 0}
 state.made_wooden_axe = {'agent': False}
 # your code here 
@@ -134,8 +134,8 @@ state.stick = {"agent": 0}
 
 
 
-# pyhop.print_operators()
-# pyhop.print_methods()
+pyhop.print_operators()
+pyhop.print_methods()
 
-pyhop.pyhop(state, [('have_enough', 'agent', 'wood', 1)], verbose=3)
-# pyhop.pyhop(state, [('have_enough', 'agent', 'wood', 12)], verbose=3)
+#pyhop.pyhop(state, [('have_enough', 'agent', 'wood', 1)], verbose=3)
+pyhop.pyhop(state, [('have_enough', 'agent', 'wood', 12)], verbose=3)
