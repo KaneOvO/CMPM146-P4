@@ -2,4 +2,5 @@
 
 Team Member:
 
-Zexuan Li
+Zexuan Li 
+Michael Mannik
