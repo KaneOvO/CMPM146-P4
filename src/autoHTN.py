@@ -69,15 +69,76 @@ def declare_methods (data):
 				
 
 def make_operator (rule):
+	
 	def operator (state, ID):
 		# your code here
-		pass
+
+		#constrant time
+		#check if there is enought time left if not then return F
+		if state.time[ID] < rule["Time"]:
+			return False
+
+		#if there another constrant from requires
+		if "Requires" in rule:
+			#get required item
+			required_item=str(*rule["requires"])
+			#check for required item
+			#if not enough of the required item return False
+			if state.required_item[ID] < rule["requires"][required_item]:
+				return False
+
+		#check for enough of consumed items
+		if "Consumes" in rule:
+			#loop through consumes dictionary
+			for consumed in rule["Consumes"]:
+				#check each key and if there isnt enough then return false
+				if state.consumed[ID] < rule["Consumes"][consumed]:
+					return False
+
+		# everything is set so now 
+	
+		# product is added
+		
+		#find product
+		item_produced=str(*rule["Produces"])
+		#add it
+		state.item_produced[ID] += rule["Produces"][item_produced]
+
+		# consumed items are subtracted 
+
+		if "Consumes" in rule:
+			#loop through consumes dictionary
+			for consumed in rule["Consumes"]:
+				state.consumed[ID] -= rule["Consumes"][consumed]
+
+		# time is subtracted
+
+		state.time[ID] -= rule["Time"]
+
+
+		return state
+
+
+
 	return operator
 
 def declare_operators (data):
 	# your code here
 	# hint: call make_operator, then declare the operator to pyhop using pyhop.declare_operators(o1, o2, ..., ok)
-	pass
+
+	#go through recipes in data
+	for recipe in data['Recipes']:
+
+		#pass a dictionary into make_operator
+		new_function=make_operator(data['Recipes'][recipe])
+
+		# new operator funtion is renamed 
+		new_function.__name__= "op_"+recipe.replace(" ", "_")
+
+		# declare new function
+		pyhop.declare_operators(new_function)
+
+
 
 def add_heuristic (data, ID):
 	# prune search branch if heuristic() returns True
@@ -85,6 +146,16 @@ def add_heuristic (data, ID):
 	# e.g. def heuristic2(...); pyhop.add_check(heuristic2)
 	def heuristic (state, curr_task, tasks, plan, depth, calling_stack):
 		# your code here
+
+
+
+
+
+
+
+
+
+
 		return False # if True, prune this branch
 
 	pyhop.add_check(heuristic)
