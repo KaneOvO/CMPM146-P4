@@ -20,6 +20,7 @@ def make_method (name, rule):
 		# your code here
 		pass
 
+
 	return method
 
 def declare_methods (data):
@@ -27,7 +28,9 @@ def declare_methods (data):
 	# sort the recipes so that faster recipes go first
 
 	# your code here
-	# hint: call make_method, then declare the method to pyhop using pyhop.declare_methods('foo', m1, m2, ..., mk)	
+	# hint: call make_method, then declare the method to pyhop using pyhop.declare_methods('foo', m1, m2, ..., mk)
+
+
 	pass			
 
 def make_operator (rule):
@@ -90,11 +93,14 @@ def declare_operators (data):
 
 	#go through recipes in data
 	for recipe in data['Recipes']:
+
 		#pass a dictionary into make_operator
 		new_function=make_operator(data['Recipes'][recipe])
 
+		# new operator funtion is renamed 
+		new_function.__name__= "op_"+recipe.replace(" ", "_")
+
 		# declare new function
-		#function is un named which could be a problem
 		pyhop.declare_operators(new_function)
 
 
@@ -105,6 +111,16 @@ def add_heuristic (data, ID):
 	# e.g. def heuristic2(...); pyhop.add_check(heuristic2)
 	def heuristic (state, curr_task, tasks, plan, depth, calling_stack):
 		# your code here
+
+
+
+
+
+
+
+
+
+
 		return False # if True, prune this branch
 
 	pyhop.add_check(heuristic)
