@@ -29,7 +29,7 @@ def make_method (name, rule):
 			for consume in rule['Consumes']:
 				method.append(('have_enough', ID, consume, rule['Consumes'][consume]))
 		#add produces
-		method.append("op_" + name, ID)
+		method.append(("op_" + name, ID))
 		return method
 	#change method name
 	method.__name__ = name	
@@ -44,6 +44,7 @@ def declare_methods (data):
 	#pass
 
 	produces = {}
+	time = {}
 
 	for recipe in data['Recipes']:
 		#change name
@@ -51,15 +52,18 @@ def declare_methods (data):
 		#make method
 		method = make_method(newName, data['Recipes'][recipe])
 		#define produce
-		produce = list(data['Recipes'][recipe]["Produces"].keys())
+		produce = list(data['Recipes'][recipe]["Produces"].keys())[0]
+		
 
 		#check if produce is in produces dic
 		if produce not in produces:
 			produces[produce] = []
 		#add method to produces
 		produces[produce].append(method)
+		#add method time to time dic
+		time[method] = data['Recipes'][recipe]["Time"]
 		#sort by time
-		produces[produce].sort(key=lambda p: data["Recipes"][p.__name__]["Time"])
+		produces[produce].sort(key=lambda x: time[x])
 
 	for produce in produces:
 		pyhop.declare_methods(str("produce_" + produce), *produces[produce])
