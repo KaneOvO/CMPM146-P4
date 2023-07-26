@@ -18,8 +18,21 @@ pyhop.declare_methods ('produce', produce)
 def make_method (name, rule):
 	def method (state, ID):
 		# your code here
-		pass
-
+		#pass
+		method = []
+		#add requires
+		if ('Requires' in rule):
+			for require in rule['Requires']:
+				method.append(('have_enough', ID, require, rule['Requires'][require]))
+		#add consumes
+		if ('Consumes' in rule):
+			for consume in rule['Consumes']:
+				method.append(('have_enough', ID, consume, rule['Consumes'][consume]))
+		#add produces
+		method.append("op_" + name, ID)
+		return method
+	#change method name
+	method.__name__ = name	
 	return method
 
 def declare_methods (data):
@@ -28,7 +41,32 @@ def declare_methods (data):
 
 	# your code here
 	# hint: call make_method, then declare the method to pyhop using pyhop.declare_methods('foo', m1, m2, ..., mk)	
-	pass			
+	#pass
+
+	produces = {}
+
+	for recipe in data['Recipes']:
+		#change name
+		newName = recipe.replace(' ', '_')
+		#make method
+		method = make_method(newName, data['Recipes'][recipe])
+		#define prodece
+		produce = list(data['Recipes'][recipe]["Produces"].keys())
+
+		#check if produce is in produces
+		if produce not in produces:
+			produces[produce] = []
+		#add method to produces
+		produces[produce].append(method)
+		#sort by time
+		produces[produce].sort(key=lambda p: data["Recipes"][recipe]["Time"])
+
+	for produce in produces:
+		pyhop.declare_methods(str("produce_" + produce), *produces[produce])
+
+		
+
+				
 
 def make_operator (rule):
 	def operator (state, ID):
