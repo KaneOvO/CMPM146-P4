@@ -50,16 +50,16 @@ def declare_methods (data):
 		newName = recipe.replace(' ', '_')
 		#make method
 		method = make_method(newName, data['Recipes'][recipe])
-		#define prodece
+		#define produce
 		produce = list(data['Recipes'][recipe]["Produces"].keys())
 
-		#check if produce is in produces
+		#check if produce is in produces dic
 		if produce not in produces:
 			produces[produce] = []
 		#add method to produces
 		produces[produce].append(method)
 		#sort by time
-		produces[produce].sort(key=lambda p: data["Recipes"][recipe]["Time"])
+		produces[produce].sort(key=lambda p: data["Recipes"][p.__name__]["Time"])
 
 	for produce in produces:
 		pyhop.declare_methods(str("produce_" + produce), *produces[produce])
